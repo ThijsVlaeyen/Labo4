@@ -1,11 +1,15 @@
 package domain;
 
+import java.time.LocalDate;
+
 public class Account {
 
    private int accountNumber;
    private double accountBalance;
+   private LocalDate creationDate;
 
    public Account(int accountNumber, double accountBalance){
+      this.creationDate = LocalDate.now();
       this.accountNumber = accountNumber;
       this.accountBalance = accountBalance;
    }
@@ -28,8 +32,10 @@ public class Account {
 
    @Override
    public String toString(){
-      return "\nAccount Number: " + this.accountNumber + "\nAccount Balance: " + this.accountBalance;
+      return "Creation date: " + this.creationDate.toString() +"\nAccount Number: " + this.accountNumber + "\nAccount Balance: " + this.accountBalance + "\n";
    }
 
-
+   public LocalDate getCreationDate() {
+      return creationDate;
+   }
 }

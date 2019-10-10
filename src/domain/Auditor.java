@@ -17,6 +17,6 @@ public class Auditor implements Observer,Console {
 
     @Override
     public void display() {
-        System.out.println(a.toString());
+        System.out.println("New account open on " + a.getCreationDate() + " with number " +  a.getAccountNumber() + " and balance of "+ a.getAccountBalance() +"\n");
     }
 }

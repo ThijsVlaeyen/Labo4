@@ -12,7 +12,7 @@ public class Accountlogger implements Observer, Console {
 
     @Override
     public void display() {
-        System.out.println(a.toString());
+        System.out.println("AccountLogger: " + a.toString());
     }
 
     @Override
