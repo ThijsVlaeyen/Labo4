@@ -14,8 +14,16 @@ public class Account {
       this(accountNumber, 0);
    }
 
-   public void updateAccount(double newBalance){
+   public void setAccountBalance(double newBalance){
       this.accountBalance = newBalance;
+   }
+
+   public double getAccountBalance() {
+      return accountBalance;
+   }
+
+   public int getAccountNumber() {
+      return accountNumber;
    }
 
    @Override

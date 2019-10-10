@@ -46,4 +46,20 @@ public class Bank implements Subject{
     public Account getAccount(int accountNumber){
         return this.accounts.get(accountNumber);
     }
+
+    public void withdraw(Account account, double amount){
+       if (amount <= 0){
+          throw new IllegalArgumentException("Not a legal number");
+       }
+       int id = account.getAccountNumber();
+       accounts.get(id).setAccountBalance(accounts.get(id).getAccountBalance() - amount);
+    }
+
+    public void deposite(Account account, double amount){
+       if (amount <= 0){
+          throw new IllegalArgumentException("Not a legal number");
+       }
+       int id = account.getAccountNumber();
+       accounts.get(id).setAccountBalance(accounts.get(id).getAccountBalance() + amount);
+    }
 }
