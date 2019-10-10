@@ -17,9 +17,13 @@ public class Bank implements Subject{
     }
 
     public void addAccount(){
-        Account account = new Account(accounts.size()+1,0);
-        accounts.put(accounts.size()+1,account);
-        updateObsrvers(account);
+        addAccount(0);
+    }
+
+    public void addAccount(double balance){
+       Account account = new Account(accounts.size()+1,balance);
+       accounts.put(accounts.size()+1,account);
+       updateObsrvers(account);
     }
 
     public void registerObserver(Observer o){
@@ -47,7 +51,11 @@ public class Bank implements Subject{
         return this.accounts.get(accountNumber);
     }
 
-    public void withdraw(Account account, double amount){
+   public Map<Integer, Account> getAccounts() {
+      return accounts;
+   }
+
+   public void withdraw(Account account, double amount){
        if (amount <= 0){
           throw new IllegalArgumentException("Not a legal number");
        }
@@ -55,7 +63,7 @@ public class Bank implements Subject{
        accounts.get(id).setAccountBalance(accounts.get(id).getAccountBalance() - amount);
     }
 
-    public void deposite(Account account, double amount){
+    public void deposit(Account account, double amount){
        if (amount <= 0){
           throw new IllegalArgumentException("Not a legal number");
        }

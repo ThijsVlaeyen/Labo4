@@ -12,7 +12,10 @@ public class Accountlogger implements Observer, Console {
 
     @Override
     public void display() {
-        System.out.println("AccountLogger: " + a.toString());
+        String out = "";
+        out += "AccountLogger:\nAmount of accounts:\t" + bank.getAccounts().size() + "\n";
+        out += "New account number:\t" + a.getAccountNumber() + "\n";
+        System.out.println(out);
     }
 
     @Override

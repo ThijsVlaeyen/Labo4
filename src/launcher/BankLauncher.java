@@ -12,6 +12,9 @@ public class BankLauncher {
         Bank bank = new Bank("KBC");
         Auditor auditor = new Auditor(bank);
         Accountlogger accountlogger = new Accountlogger(bank);
+        bank.addAccount(1000);
+        bank.addAccount(69);
         bank.addAccount();
+        bank.addAccount(420);
     }
 }
