@@ -1,19 +1,18 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Bank implements Subject{
     private Map<Integer,Account> accounts;
-    private List<Observer> observers;
+    private Map<EventType,List<Observer>> observers;
     private String name;
 
     public Bank(String name){
         this.name = name;
         accounts = new HashMap<>();
-        observers = new ArrayList<>();
+        observers = new HashMap<>();
     }
 
     public void addAccount(){
@@ -23,26 +22,32 @@ public class Bank implements Subject{
     public void addAccount(double balance){
        Account account = new Account(accounts.size()+1,balance);
        accounts.put(accounts.size()+1,account);
-       updateObsrvers(account);
+       updateObsrvers(EventType.ADD,account);
     }
 
-    public void registerObserver(Observer o){
-        if (o != null) {
-            this.observers.add(o);
+    @Override
+    public void registerObserver(List<EventType> eventTypes, Observer o){
+        for (EventType e:eventTypes) {
+            //e.addObserver(o);
+            addObserver(e,o);
         }
     }
-
-    @Override
-    public void removeObserver(Observer o) {
-        this.observers.remove(o);
+     @Override
+    public void addObserver(EventType e, Observer o){
+        observers.get(e).add(o);
     }
 
     @Override
-    public void updateObsrvers(Account account) {
+    public void removeObserver(EventType e ,Observer o) {
+        this.observers.get(e).remove(o);
+    }
+
+    @Override
+    public void updateObsrvers(EventType e, Account account) {
         if (account == null){
             throw new IllegalArgumentException("wrong account");
         }
-        for (Observer o:this.observers) {
+        for (Observer o:this.observers.get(e)) {
             o.update(account);
         }
     }
@@ -61,6 +66,7 @@ public class Bank implements Subject{
        }
        int id = account.getAccountNumber();
        accounts.get(id).setAccountBalance(accounts.get(id).getAccountBalance() - amount);
+       updateObsrvers(EventType.WITHDRAW,account);
     }
 
     public void deposit(Account account, double amount){
@@ -69,5 +75,6 @@ public class Bank implements Subject{
        }
        int id = account.getAccountNumber();
        accounts.get(id).setAccountBalance(accounts.get(id).getAccountBalance() + amount);
+       updateObsrvers(EventType.DEPOSIT,account);
     }
 }
