@@ -16,13 +16,13 @@ public class BankLauncher {
         bank.addObserver(Arrays.asList(EventType.values()), accountlogger);
 
         bank.addAccount(123);
-        bank.deposit(1, 1000);
+        bank.deposit(123, 1000);
 
         auditor.display();
 
         accountlogger.display();
 
-        bank.deposit(1,123);
+        bank.deposit(123,123);
         accountlogger.display();
 
     }
