@@ -1,8 +1,8 @@
 package domain;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.*;
 
 public class Bank implements Subject{
     private Map<Integer,Account> accounts;
@@ -10,19 +10,18 @@ public class Bank implements Subject{
     private String name;
 
     public Bank(String name){
-        this.name = name;
-        accounts = new HashMap<>();
-        observers = new HashMap<>();
+       this.name = name;
+       observers = new HashMap<>();
+       accounts = new HashMap<>();
+       for (EventType event : EventType.values()){
+          observers.put(event, new LinkedList<>());
+       }
     }
 
-    public void addAccount(){
-        addAccount(0);
-    }
-
-    public void addAccount(double balance){
-       Account account = new Account(accounts.size()+1,balance);
-       accounts.put(accounts.size()+1,account);
-       updateObsrvers(EventType.ADD,account);
+    public void addAccount(int id){
+       Account account = new Account(id);
+       accounts.put(id, account);
+       updateObservers(EventType.ADD, id);
     }
 
     @Override
@@ -32,7 +31,15 @@ public class Bank implements Subject{
             addObserver(e,o);
         }
     }
-     @Override
+
+   @Override
+   public void addObserver(Collection<EventType> bankEvents, Observer observer) {
+      for (EventType eventType: bankEvents){
+         addObserver(eventType, observer);
+      }
+   }
+
+@Override
     public void addObserver(EventType e, Observer o){
         observers.get(e).add(o);
     }
@@ -43,13 +50,11 @@ public class Bank implements Subject{
     }
 
     @Override
-    public void updateObsrvers(EventType e, Account account) {
-        if (account == null){
-            throw new IllegalArgumentException("wrong account");
-        }
-        for (Observer o:this.observers.get(e)) {
-            o.update(account);
-        }
+    public void updateObservers(EventType e, int accountNumber) {
+       for (Observer observer : observers.get(e)){
+          Account account = accounts.get(accountNumber);
+          observer.update(e, account);
+       }
     }
 
     public Account getAccount(int accountNumber){
@@ -60,21 +65,21 @@ public class Bank implements Subject{
       return accounts;
    }
 
-   public void withdraw(Account account, double amount){
+   public void withdraw(int accountnumber, double amount){
        if (amount <= 0){
           throw new IllegalArgumentException("Not a legal number");
        }
-       int id = account.getAccountNumber();
-       accounts.get(id).setAccountBalance(accounts.get(id).getAccountBalance() - amount);
-       updateObsrvers(EventType.WITHDRAW,account);
+       Account account = accounts.get(accountnumber);
+       account.setAccountBalance(account.getAccountBalance() - amount);
+       updateObservers(EventType.WITHDRAW,accountnumber);
     }
 
-    public void deposit(Account account, double amount){
+    public void deposit(int id, double amount){
        if (amount <= 0){
           throw new IllegalArgumentException("Not a legal number");
        }
-       int id = account.getAccountNumber();
-       accounts.get(id).setAccountBalance(accounts.get(id).getAccountBalance() + amount);
-       updateObsrvers(EventType.DEPOSIT,account);
+       Account account = accounts.get(id);
+       account.setAccountBalance(account.getAccountBalance() + amount);
+       updateObservers(EventType.DEPOSIT,id);
     }
 }

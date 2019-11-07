@@ -1,25 +1,29 @@
 package launcher;
 
-import domain.Account;
-import domain.Accountlogger;
-import domain.Auditor;
-import domain.Bank;
+import domain.*;
 
 import javax.security.auth.login.AccountLockedException;
+import java.util.Arrays;
 import java.util.Map;
 
 public class BankLauncher {
     public static void main(String[] args) {
         Bank bank = new Bank("KBC");
-        Auditor auditor = new Auditor(bank);
-        Accountlogger accountlogger = new Accountlogger(bank);
-        Map<Integer,Account> accountMap = bank.getAccounts();
-        for (Account a:accountMap.values()) {
+        Auditor auditor = new Auditor();
+        Accountlogger accountlogger = new Accountlogger();
 
-        }
-        bank.addAccount(1000);
-        bank.addAccount(69);
-        bank.addAccount();
-        bank.addAccount(420);
+        bank.addObserver(EventType.ADD, auditor);
+        bank.addObserver(Arrays.asList(EventType.values()), accountlogger);
+
+        bank.addAccount(123);
+        bank.deposit(1, 1000);
+
+        auditor.display();
+
+        accountlogger.display();
+
+        bank.deposit(1,123);
+        accountlogger.display();
+
     }
 }

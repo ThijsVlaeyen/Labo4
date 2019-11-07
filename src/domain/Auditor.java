@@ -1,18 +1,16 @@
 package domain;
 
+import java.util.Objects;
+
 public class Auditor implements Observer,Console {
     private Account a;
-    private Bank bank;
-
-    public Auditor(Bank bank) {
-        this.bank = bank;
-        bank.registerObserver(this);
-    }
 
     @Override
-    public void update(Account a) {
-        this.a = a;
-        display();
+    public void update(EventType eventType, Account account) {
+        if (eventType.equals(EventType.ADD)){
+            this.a = account;
+            display();
+        }
     }
 
     @Override

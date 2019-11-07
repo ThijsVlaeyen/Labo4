@@ -6,7 +6,8 @@ import java.util.List;
 public enum EventType {
     ADD(new ArrayList<>()),
     DEPOSIT(new ArrayList<>()),
-    WITHDRAW(new ArrayList<>());
+    WITHDRAW(new ArrayList<>()),
+    CLOSE(new ArrayList<>());
 
     private List<Observer> observers;
 
